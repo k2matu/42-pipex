@@ -6,13 +6,13 @@
 #    By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 14:47:52 by kmatjuhi          #+#    #+#              #
-#    Updated: 2024/01/20 18:58:16 by kmatjuhi         ###   ########.fr        #
+#    Updated: 2024/01/25 13:32:09 by kmatjuhi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libft.a
 
-SRCS	=	$(wildcard *.c) $(wildcard ./ft_printf/*.c) $(wildcard ./GNL/*.c)
+SRCS	=	$(wildcard *.c) $(wildcard ./GNL/*.c)
 
 OFILES	=	$(SRCS:.c=.o)
 
