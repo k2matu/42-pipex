@@ -1,0 +1,10 @@
+Makefile
+TERM_SESSION_ID=w0t0p0:608C4141-2C73-4221-9EEA-9346793BA1C0
+infile
+libft
+outfile
+pipex
+pipex.c
+pipex.h
+pipex.o
+pipex.pdf
