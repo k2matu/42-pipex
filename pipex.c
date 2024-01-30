@@ -6,7 +6,7 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/01/29 14:00:21 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:24:10 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,16 @@ char	**parsing_PATH(char **envp, char *str)
 	}
 	path_to_env = ft_split(path, ':');
 	i = 0;
-	while (path[i])
+	while (path_to_env[i])
 	{
 		path_to_env[i] = ft_strjoin(path_to_env[i], "/");
 		path_to_env[i] = ft_strjoin(path_to_env[i], str);
-		printf("%s", path_to_env[i]);
 		i++;
 	}
 	return (path_to_env);
 }
 
-void	xcute_cmd1(char *cmd, char **envp)
+void	xcute_cmd(char *cmd, char **envp)
 {
 	char	**args;
 	char	**path;
@@ -54,14 +53,12 @@ void	xcute_cmd1(char *cmd, char **envp)
 
 	i = 0;
 	args = ft_split(cmd, ' ');
-	printf("executing 1\n");
 	path = parsing_PATH(envp, args[0]);
 	while (path[i])
 	{
-		printf("%s", path[i]);
-		// execve(path[i], args, envp);
-		// perror("execve");
-		// free(path[i]);
+		execve(path[i], args, envp);
+		perror("execve");
+		free(path[i]);
 		i++;
 	}
 }
@@ -73,33 +70,11 @@ void	pipex(char **argv, int file1, char **envp)
 
 	if (pipe(fd) == -1)
 		return (perror("Pipe: "));
-
-	// if (pid == 0)
-	// {
-	// 	xcute_cmd1(argv[2], envp);
-	// }
-	// else
-	// 	printf("hello");
-
-	//     pid_t pid;
-
-    printf("Fork here.\n");
-    pid = fork();
-    if (pid == -1)
-        return (perror("Fork: "));
-    if (pid == 0)
-    {
-        // Fork's return value is 0:
-        // we are now in the child process
-        printf("Child: I'm the child, my internal pid is %d.\n", pid);
+	pid = fork();
+	if (pid == -1)
+		return (perror("Fork: "));
+	if (pid == 0)
 		xcute_cmd1(argv[2], envp);
-    }
-    else if (pid > 0)
-    {
-        // Fork's return value is not 0
-        // which means we are in the parent process
-        printf("Parent: I'm the parent, my child's pid is %d.\n", pid);
-	}
 }
 
 
