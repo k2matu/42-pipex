@@ -6,22 +6,13 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/01/30 11:24:10 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:20:51 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// void duplicate(int file1, int *fd)
-// {
-// 	dup2(file1, STDIN_FILENO);
-// 	dup2(file2, STDOUT_FILENO);
-// 	close(file1);
-// 	close(file2);
-// 	close(fd[0]);
-// }
-
-char	**parsing_PATH(char **envp, char *str)
+char	**parsing_path(char **envp, char *str)
 {
 	char	**path_to_env;
 	char	*path;
@@ -45,48 +36,79 @@ char	**parsing_PATH(char **envp, char *str)
 	return (path_to_env);
 }
 
-void	xcute_cmd(char *cmd, char **envp)
+void	xcute_cmd1(char *cmd, char **envp, int *fd, char *file)
 {
 	char	**args;
 	char	**path;
 	int		i;
+	int		file1;
 
 	i = 0;
 	args = ft_split(cmd, ' ');
-	path = parsing_PATH(envp, args[0]);
+	file1 = open(file, O_RDONLY);
+	if (file1 == -1)
+		exit (-1);
+	dup2(file1, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(file1);
+	path = parsing_path(envp, args[0]);
 	while (path[i])
 	{
+		close(fd[0]);
 		execve(path[i], args, envp);
-		perror("execve");
+		// perror("execve");
 		free(path[i]);
 		i++;
 	}
 }
 
-void	pipex(char **argv, int file1, char **envp)
+void	xcute_cmd2(char *cmd, char **envp, int *fd, char *file)
 {
-	int	fd[2];
-	pid_t	pid;
+	char	**args;
+	char	**path;
+	int		i;
+	int		file2;
 
-	if (pipe(fd) == -1)
-		return (perror("Pipe: "));
-	pid = fork();
-	if (pid == -1)
-		return (perror("Fork: "));
-	if (pid == 0)
-		xcute_cmd1(argv[2], envp);
+	i = 0;
+	args = ft_split(cmd, ' ');
+	file2 = open(file, O_RDWR | O_CREAT, 0777 | O_TRUNC);
+	if (file2 == -1)
+		exit (-1);
+	dup2(file2, STDOUT_FILENO);
+	dup2(fd[0], STDIN_FILENO);
+	close(file2);
+	close(fd[1]);
+	path = parsing_path(envp, args[0]);
+	while (path[i])
+	{
+		execve(path[i], args, envp);
+		// perror("execve");
+		free(path[i]);
+		i++;
+	}
 }
-
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int	file1;
-	int	file2;
-
-	file1 = open(argv[1], O_RDONLY);
-	if (file1 == -1)
+	int		fd[2];
+	pid_t	pid1;
+	pid_t	pid2;
+	
+	if (argc != 5)
+		return (0);
+	if (pipe(fd) == -1)
 		return (-1);
-	pipex(argv, file1, envp);
+	pid1 = fork();
+	if (pid1 == -1)
+		return (-1);
+	if (pid1 == 0)
+		xcute_cmd1(argv[2], envp, fd, argv[1]);
+	pid2 = fork();
+	if (pid2 == 0)
+		xcute_cmd2(argv[3], envp, fd, argv[4]);
+	waitpid(pid1, NULL, 0);
+	close(fd[1]);
+	close(fd[0]);
 	return (0);
 }
-
