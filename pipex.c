@@ -6,7 +6,7 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/02/05 18:59:13 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/05 21:30:11 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	file2_open(int *fd, char *file)
 {
 	int	file2;
 
-	file2 = open(file, O_WRONLY | O_TRUNC, 0644 | O_CREAT);
+	file2 = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (file2 == -1)
 		error_msg(file);
 	dup2(file2, STDOUT_FILENO);
@@ -84,7 +84,6 @@ void pipex(char *argv[], char *envp[], int *fd)
 		file2_open(fd, argv[4]);
 		xcute_cmd(argv[3], envp);
 	}
-	waitpid(pid1, NULL, 0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
