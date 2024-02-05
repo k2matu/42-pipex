@@ -6,109 +6,97 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/01/30 14:20:51 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:59:13 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**parsing_path(char **envp, char *str)
+void	file1_open(int *fd, char *file)
 {
-	char	**path_to_env;
-	char	*path;
-	int		i;
+	int	file1;
 
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
-		i++;
-	}
-	path_to_env = ft_split(path, ':');
-	i = 0;
-	while (path_to_env[i])
-	{
-		path_to_env[i] = ft_strjoin(path_to_env[i], "/");
-		path_to_env[i] = ft_strjoin(path_to_env[i], str);
-		i++;
-	}
-	return (path_to_env);
-}
-
-void	xcute_cmd1(char *cmd, char **envp, int *fd, char *file)
-{
-	char	**args;
-	char	**path;
-	int		i;
-	int		file1;
-
-	i = 0;
-	args = ft_split(cmd, ' ');
 	file1 = open(file, O_RDONLY);
 	if (file1 == -1)
-		exit (-1);
+		error_msg(file);
 	dup2(file1, STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(file1);
-	path = parsing_path(envp, args[0]);
-	while (path[i])
-	{
-		close(fd[0]);
-		execve(path[i], args, envp);
-		// perror("execve");
-		free(path[i]);
-		i++;
-	}
 }
 
-void	xcute_cmd2(char *cmd, char **envp, int *fd, char *file)
+void	file2_open(int *fd, char *file)
+{
+	int	file2;
+
+	file2 = open(file, O_WRONLY | O_TRUNC, 0644 | O_CREAT);
+	if (file2 == -1)
+		error_msg(file);
+	dup2(file2, STDOUT_FILENO);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[1]);
+	close(file2);
+	
+}
+
+void	xcute_cmd(char *cmd, char **envp)
 {
 	char	**args;
 	char	**path;
 	int		i;
-	int		file2;
+	int		ok;
 
-	i = 0;
+	i = -1;
 	args = ft_split(cmd, ' ');
-	file2 = open(file, O_RDWR | O_CREAT, 0777 | O_TRUNC);
-	if (file2 == -1)
-		exit (-1);
-	dup2(file2, STDOUT_FILENO);
-	dup2(fd[0], STDIN_FILENO);
-	close(file2);
-	close(fd[1]);
 	path = parsing_path(envp, args[0]);
-	while (path[i])
+	while (path[++i])
 	{
-		execve(path[i], args, envp);
-		// perror("execve");
-		free(path[i]);
-		i++;
+		ok = access(path[i], X_OK);
+		if (ok == -1)
+			free(path[i]);
+		else
+			execve(path[i], args, envp);
 	}
+	ft_putstr_fd("pipex: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": Command not found\n", 2);
+	exit(126);
+}
+
+void pipex(char *argv[], char *envp[], int *fd)
+{
+	pid_t	pid1;
+	pid_t	pid2;
+
+	pid1 = fork();
+	if (pid1 == -1)
+		error_msg("");
+	if (pid1 == 0)
+	{
+		file1_open(fd, argv[1]);
+		xcute_cmd(argv[2], envp);
+	}
+	pid2 = fork();
+	if (pid2 == -1)
+		error_msg("");
+	if (pid2 == 0)
+	{
+		file2_open(fd, argv[4]);
+		xcute_cmd(argv[3], envp);
+	}
+	waitpid(pid1, NULL, 0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int		fd[2];
-	pid_t	pid1;
-	pid_t	pid2;
-	
+	int	fd[2];
+
 	if (argc != 5)
-		return (0);
+		error_msg("It must take 4 arguments");
 	if (pipe(fd) == -1)
-		return (-1);
-	pid1 = fork();
-	if (pid1 == -1)
-		return (-1);
-	if (pid1 == 0)
-		xcute_cmd1(argv[2], envp, fd, argv[1]);
-	pid2 = fork();
-	if (pid2 == 0)
-		xcute_cmd2(argv[3], envp, fd, argv[4]);
-	waitpid(pid1, NULL, 0);
+		error_msg("");
+	pipex(argv, envp, fd);
 	close(fd[1]);
 	close(fd[0]);
-	return (0);
+	return(0);
 }
