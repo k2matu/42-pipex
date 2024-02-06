@@ -6,7 +6,7 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/02/05 21:30:11 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:22:36 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	file2_open(int *fd, char *file)
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[1]);
 	close(file2);
-	
 }
 
 void	xcute_cmd(char *cmd, char **envp)
@@ -46,6 +45,8 @@ void	xcute_cmd(char *cmd, char **envp)
 	int		i;
 	int		ok;
 
+	if (cmd[0] == '\0')
+		error_msg("");
 	i = -1;
 	args = ft_split(cmd, ' ');
 	path = parsing_path(envp, args[0]);
@@ -63,7 +64,7 @@ void	xcute_cmd(char *cmd, char **envp)
 	exit(126);
 }
 
-void pipex(char *argv[], char *envp[], int *fd)
+void	pipex(char *argv[], char *envp[], int *fd)
 {
 	pid_t	pid1;
 	pid_t	pid2;
@@ -97,5 +98,5 @@ int	main(int argc, char *argv[], char *envp[])
 	pipex(argv, envp, fd);
 	close(fd[1]);
 	close(fd[0]);
-	return(0);
+	return (0);
 }
