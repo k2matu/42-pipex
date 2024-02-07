@@ -1,60 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   ft_trimstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 06:53:37 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/02/07 20:17:36 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/07 21:25:42 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-int	match(char const *set, char c)
+static int	first_pos(char const *s1, char const c)
 {
 	int	i;
 
 	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
+	while (s1[i] && s1[i] != c)
 		i++;
-	}
-	return (0);
-}
-
-int	first_pos(char const *s1, char const *set)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] && match(set, s1[i]))
+	if (s1[i] == c)
 		i++;
 	return (i);
 }
 
-int	last_pos(char const *s1, char const *set)
+static int	last_pos(char const *s1, char const c)
 {
 	int	i;
 
 	i = ft_strlen(s1);
-	while (i > 0 && match(set, s1[i - 1]))
+	while (i > 0 && s1[i] != c)
 		i--;
 	return (i);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_trimstr(char const *s1, char const c)
 {
 	int		first;
 	int		last;
 	int		len;
 	char	*dest;
 
-	first = first_pos(s1, set);
-	last = last_pos(s1, set);
+	first = first_pos(s1, c);
+	last = last_pos(s1, c);
 	len = last - first;
 	if (len <= 0)
 	{
@@ -63,10 +51,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 			return (NULL);
 	}
 	if (len <= 0)
-	{
-		dest[0] = '\0';
-		return (dest);
-	}
+		return (NULL);
 	dest = ft_substr(s1, first, len);
 	return (dest);
 }

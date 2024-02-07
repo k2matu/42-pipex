@@ -6,13 +6,13 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:06:33 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/02/06 12:22:36 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/07 21:26:07 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	file1_open(int *fd, char *file)
+static void	file1_open(int *fd, char *file)
 {
 	int	file1;
 
@@ -25,7 +25,7 @@ void	file1_open(int *fd, char *file)
 	close(file1);
 }
 
-void	file2_open(int *fd, char *file)
+static void	file2_open(int *fd, char *file)
 {
 	int	file2;
 
@@ -38,7 +38,7 @@ void	file2_open(int *fd, char *file)
 	close(file2);
 }
 
-void	xcute_cmd(char *cmd, char **envp)
+static void	xcute_cmd(char *cmd, char **envp)
 {
 	char	**args;
 	char	**path;
@@ -48,7 +48,7 @@ void	xcute_cmd(char *cmd, char **envp)
 	if (cmd[0] == '\0')
 		error_msg("");
 	i = -1;
-	args = ft_split(cmd, ' ');
+	args = parsing_args(cmd);
 	path = parsing_path(envp, args[0]);
 	while (path[++i])
 	{
