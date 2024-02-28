@@ -6,7 +6,7 @@
 #    By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 14:30:56 by kmatjuhi          #+#    #+#              #
-#    Updated: 2024/02/07 20:54:47 by kmatjuhi         ###   ########.fr        #
+#    Updated: 2024/02/28 11:53:42 by kmatjuhi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ LIBFT	=	libft/libft.a
 
 NAME	=	pipex
 
-SRCS	=	pipex.c pipex_utils.c ft_trimstr.c
+SRCS	=	pipex.c pipex_utils.c ft_sstrjoin.c
 
 OBJS	=	$(SRCS:.c=.o)
 

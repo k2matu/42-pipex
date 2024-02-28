@@ -1,0 +1,52 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red251\green2\blue7;\red180\green36\blue25;
+}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c100000\c14913\c0;\cssrgb\c76409\c21698\c12524;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \ul \ulc2 \CocoaLigature0 The next tests will use the following command:\ulnone \
+./pipex "assets/deepthought.txt" "cat" "hostname" "test-xx.txt"\
+< \cf2 assets/deepthought.txt cat | hostname > outfile.txt\
+OK.\
+\cf2 \
+\cf3 ./pipex "assets/deepthought.txt" "grep Now" "head -2" "test-xx.txt"\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 < assets/deepthought.txt grep Now | head -2 > \cf2 outfile.txt\cf2 \
+\
+./pipex "assets/deepthought.txt" "grep Now" "wc -w" "test-xx.txt"\
+\cf2 < assets/deepthought.txt grep Now | wc -w > outfile.txt\cf2 \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 ./pipex "assets/deepthought.txt" "grep Now" "cat" "test-xx.txt"\
+< assets/deepthought.txt grep Now | cat > \cf2 outfile.txt\cf3 \
+\ul then:\ulnone \
+./pipex "assets/deepthought.txt" "wc -w" "cat" "test-xx.txt"\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 < assets/deepthought.txt wc -w | cat > \cf2 outfile.txt\cf2 \
+\
+./pipex "assets/deepthought.txt" "notexisting" "wc" "test-xx.txt"\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\ul (notexisting is a command that is not supposed to exist)\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf2 \ulnone < assets/deepthought.txt notexisting | wc > outfile.txt\cf2 \ul \ulc2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\ulnone \
+\
+\cf3 ./pipex "assets/deepthought.txt" "cat" "notexisting" "test-xx.txt"\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 < assets/deepthought.txt cat | notexisting > \cf2 outfile.txt\cf2 \
+\
+./pipex "assets/deepthought.txt" "grep Now" "/bin/cat" "test-xx.txt"\
+\cf2 < assets/deepthought.txt grep Now | /bin/cat > outfile.txt\cf2 \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 ./pipex "/dev/urandom" "cat" "head -1" "test-xx.txt"\
+< /dev/urandom cat | head -1 > outfile.txt\cf2 \
+\cf4 # 31: The program does not timeout              \
+\
+Unset PATH.}

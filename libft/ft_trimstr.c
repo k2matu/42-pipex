@@ -6,11 +6,11 @@
 /*   By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 06:53:37 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/02/07 21:25:42 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2024/02/28 11:51:38 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
 static int	first_pos(char const *s1, char const c)
 {
