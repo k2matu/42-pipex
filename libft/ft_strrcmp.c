@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_arr.c                                      :+:      :+:    :+:   */
+/*   ft_strrcmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmatjuhi <kmatjuhi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 07:55:51 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/03/07 14:53:33 by kmatjuhi         ###   ########.fr       */
+/*   Created: 2023/10/28 17:17:09 by kmatjuhi          #+#    #+#             */
+/*   Updated: 2024/03/06 21:38:40 by kmatjuhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_arr(char **value)
+int	ft_strrcmp(char *s1, char *s2)
 {
 	int	i;
+	int	j;
 
-	if (value == NULL)
-		return ;
 	i = 0;
-	while (value[i])
-		free(value[i++]);
-	free(value);
+	j = ft_strlen(s1) - ft_strlen(s2);
+	while (s1[j] == s2[i] && s1[j] != '\0')
+	{
+		i++;
+		j++;
+	}
+	if (s1[j] == s2[i])
+		return (0);
+	else
+		return (s1[j] - s2[i]);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kmatjuhi <kmatjuhi@student.42.fr>          +#+  +:+       +#+         #
+#    By: kmatjuhi <kmatjuhi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 14:30:56 by kmatjuhi          #+#    #+#              #
-#    Updated: 2024/02/28 11:53:42 by kmatjuhi         ###   ########.fr        #
+#    Updated: 2024/03/07 15:24:31 by kmatjuhi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ LIBFT	=	libft/libft.a
 
 NAME	=	pipex
 
-SRCS	=	pipex.c pipex_utils.c ft_sstrjoin.c
+SRCS	=	pipex.c parsing_args.c parsing_path.c error_msg.c fopen.c
 
 OBJS	=	$(SRCS:.c=.o)
 
 CC		=	cc
 RM		=	-rm -f
-CGLAGS	=	-Wall -Werror -Wextra
+CGLAGS	=	-Wall -Werror -Wextra -g
 
 all: $(NAME)
 
