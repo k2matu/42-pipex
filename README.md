@@ -34,7 +34,7 @@ After compilation, you can use the program as follows:
 ```
 ./pipex file1 cmd1 cmd2 file2
 ```
-Example:
+### Example:
 ```
 ./pipex infile "ls -l" "wc -l" outfile
 ```
