@@ -35,12 +35,10 @@ After compilation, you can use the program as follows:
 ./pipex file1 cmd1 cmd2 file2
 ```
 Example:
-
-To convert the contents of input.txt to uppercase and then sort the result before saving it to output.txt, you would use:
 ```
-./pipex input.txt "tr 'a-z' 'A-Z'" "sort" output.txt
+./pipex infile "ls -l" "wc -l" outfile
 ```
-This command pipeline reads from input.txt, converts the text to uppercase using tr, sorts the result with sort, and writes the final output to output.txt.
+Should behave like: < infile ls -l | wc -l > outfile
 
 ## Notes
 Ensure that cmd1 and cmd2 are valid shell commands and available in your system's PATH.
