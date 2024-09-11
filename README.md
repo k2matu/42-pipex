@@ -38,7 +38,10 @@ Example:
 ```
 ./pipex infile "ls -l" "wc -l" outfile
 ```
-Should behave like: < infile ls -l | wc -l > outfile
+Should behave like:
+```
+< infile ls -l | wc -l > outfile
+```
 
 ## Notes
 Ensure that cmd1 and cmd2 are valid shell commands and available in your system's PATH.
