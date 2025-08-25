@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmatjuhi <kmatjuhi@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kale <kale@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:23:22 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/03/07 15:44:01 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:18:45 by kale             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static char	**parsing_to_env(char *path, char *str, int *fd)
 	path_to_env = ft_split(path, ':');
 	free(path);
 	if (!path_to_env)
+	{
 		custom_msg("", "malloc failed\n", fd, NULL);
+		exit(EXIT_FAILURE);
+	}
 	while (path_to_env[i])
 	{
 		path_to_env[i] = ft_sstrjoin(path_to_env[i], str);
@@ -51,6 +54,7 @@ static char	**parsing_to_env(char *path, char *str, int *fd)
 		{
 			ft_free_arr(path_to_env);
 			custom_msg("", "malloc failed\n", fd, NULL);
+			exit(EXIT_FAILURE);
 		}
 		i++;
 	}
@@ -72,7 +76,10 @@ char	**parsing_path(char **envp, char *str, int *fd)
 		i++;
 	}
 	if (!path)
+	{
 		custom_msg(str, ": No such file or directory\n", fd, NULL);
+		exit(127);
+	}
 	path_to_env = parsing_to_env(path, str, fd);
 	return (path_to_env);
 }

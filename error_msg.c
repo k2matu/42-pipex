@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmatjuhi <kmatjuhi@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kale <kale@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:11:11 by kmatjuhi          #+#    #+#             */
-/*   Updated: 2024/03/07 15:51:09 by kmatjuhi         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:54:42 by kale             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	error_msg(char *str, int *fd, int code, pid_t pid)
 {
-	close(fd[0]);
-	close(fd[1]);
+	close_fds(fd);
 	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);
@@ -27,11 +26,9 @@ void	error_msg(char *str, int *fd, int code, pid_t pid)
 
 void	custom_msg(char *cmd, char *str, int *fd, char **args)
 {
-	close(fd[0]);
-	close(fd[1]);
+	close_fds(fd);
 	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(str, 2);
 	ft_free_arr(args);
-	exit(EXIT_FAILURE);
 }
